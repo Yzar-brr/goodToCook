@@ -18,8 +18,10 @@ return new class extends Migration
             $table->integer('temps');
             $table->text('consigne')->nullable();
 
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users');
+            $table->boolean('confirmed')->default(false);
+
 
             $table->timestamps();
             $table->softDeletes();

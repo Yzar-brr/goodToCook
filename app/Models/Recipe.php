@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\RecipeContient;
 
 class Recipe extends Model
 {
@@ -17,6 +16,8 @@ class Recipe extends Model
         'temps',
         'ingredient',
         'consigne',
+        'name',
+        'description',
     ];
 
     public $timestamps = false;
