@@ -37,7 +37,7 @@
         
                 <div class="form-group">
                     <label for="ingredients">Ingrédients</label>
-                    <select class="" id="ingredients" >
+                    <select class="" id="ingredients">
                         @foreach ($allIngredients as $ingredient)
                             <option wire:model.live="ingredients.{{$ingredient->id}}" value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                         @endforeach

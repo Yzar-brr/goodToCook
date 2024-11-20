@@ -18,6 +18,8 @@ class Recipe extends Model
         'consigne',
         'name',
         'description',
+        'created_by',
+        'confirmed',
     ];
 
     public $timestamps = false;
