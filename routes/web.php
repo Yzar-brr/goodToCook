@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'app');
+Route::view('/', 'app')->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::view('ingredient', 'livewire.ingredients')->name('ingredient');
+
+Route::view('recette', 'livewire.recettes')->name('recette');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

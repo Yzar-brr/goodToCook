@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'users';
 
@@ -19,6 +20,7 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
+        'role',
     ];
 
     protected $hidden = [

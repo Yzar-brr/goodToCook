@@ -14,8 +14,9 @@ class Recipes extends Component
     public $description;
     public $temps;
     public $consigne;
-    public $ingredients = [];
+    public array $ingredients;
     public $allIngredients;
+    public string $ingredientResearch = '';
 
     public function submit()
     {
@@ -46,7 +47,12 @@ class Recipes extends Component
 
     public function render()
     {
-        $this->allIngredients = Ingredient::all();
+        if($this->ingredientResearch != ''){
+            $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->get();
+        }else{
+            $this->allIngredients = Ingredient::all();
+        }
+
         return view('livewire.recipes');
     }
 }
