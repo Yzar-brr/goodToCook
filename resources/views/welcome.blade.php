@@ -17,9 +17,12 @@
 
 <body class="antialiased">
     <div x-data="{ activeComponent: 'home' }" class="flex min-h-screen bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500">
-        <div class="flex fixed w-full top-0 h-16 z-30 p-6 justify-between bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 items-center">
+        <div class="flex fixed w-full top-0 h-16 z-30 p-6 bg-dots-darker bg-center dark:bg-dots-lighter dark:bg-gray-900 items-center">
             <!-- Menu de navigation -->
-            <div>
+            <div class="flex justify-start w-1/3">
+                <x-custom-application-logo class="w-12 h-12" />
+            </div>
+            <div class="flex flex-row w-1/3">
                 <div class="flex flex-row w-full h-12 items-center justify-between">
                     <a class="text-gray-200 p-4 cursor-pointer hover:text-white transition"
                         @click="activeComponent = 'home'">Home</a>
@@ -29,7 +32,7 @@
                         @click="activeComponent = 'ingredients'">Créer un ingrédient</a>
                 </div>
             </div>
-                <livewire:welcome.navigation />
+            <livewire:welcome.navigation /> {{-- ok --}}
         </div>
         
 
@@ -43,7 +46,9 @@
                         <div class="mx-auto sm:px-6 lg:px-8">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6 text-gray-900">
-                                    {{ __("You're logged in!") }}
+                                    <div class="text-xl font-bold text-center">Bienvenue sur notre site de recettes</div>
+                                    <div class="text-center my-4">Vous pouvez créer des recettes et des ingrédients</div>
+                                    <livewire:home />
                                 </div>
                             </div>
                         </div>

@@ -13,7 +13,7 @@
             <form wire:submit.prevent="submit" class="flex flex-col space-y-4">
                 <div class="form-group flex flex-col">
                     <label for="name">Nom de la recette</label>
-                    <input type="text" class="form-control" id="name" wire:model.live="name" required>
+                    <input type="text" class="form-control" id="name" wire:model.live="name">
                     @error('name')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -28,7 +28,7 @@
 
                 <div class="form-group flex flex-col">
                     <label for="temps">Temps de préparation (en minutes)</label>
-                    <input type="number" class="form-control" id="temps" wire:model.live="temps" required>
+                    <input type="number" class="form-control" id="temps" wire:model.live="temps">
                     @error('temps')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -44,7 +44,7 @@
 
 
                 <div class="form-group flex flex-col p-4 bg-gray-200 rounded-sm">
-                    <label for="ingredients">Ingrédients</label>
+                    <label for="ingredient">Ingrédients</label>
                     <small for="researchIngredient">Rechercher un ingrédient</small>
                     <input type="text" placeholder="Effectuer une recherche" class="w-64 h-8" wire:model.live='ingredientResearch'>
 
@@ -56,7 +56,7 @@
                     @endforeach
 
                     <small class="text-gray-500">Ajoutez des ingrédients en cochant les cases.</small>
-                    @error('ingredients')
+                    @error('ingredient')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

@@ -14,6 +14,7 @@ class Ingredient extends Model
     protected $table = 'ingredient';
 
     protected $fillable = [
+        'id',
         'name',
         'image',
         'prix_unitaire',
@@ -21,8 +22,7 @@ class Ingredient extends Model
 
     public $timestamps = true;
 
-    public function recipes()
-    {
-        return $this->belongsToMany(Recipe::class, 'recipe_contient', 'ingredient_id', 'recipe_id')->withTimestamps();
+    public function recipe(){
+        return $this->belongsToMany(Recipe::class, 'recipe_id');
     }
 }

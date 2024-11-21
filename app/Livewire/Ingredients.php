@@ -5,10 +5,12 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Ingredient;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 
 class Ingredients extends Component
 {
-
+    use WithFileUploads;
+    
     public $name;
     public $image;
     public $prix_unitaire;

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Recipe;
+use App\Models\RecipeContient;
 use App\Models\Ingredient;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ class Recipes extends Component
     public $temps;
     public $consigne;
     public array $ingredients;
+    public $ingredient = [];
     public $allIngredients;
     public string $ingredientResearch = '';
 
@@ -26,7 +28,7 @@ class Recipes extends Component
                 'description' => 'nullable|string',
                 'temps' => 'required|integer',
                 'consigne' => 'nullable|string',
-                'ingredients' => 'required|array|min:1',
+                'ingredient' => 'required|array|min:1',
             ]);
             
             $recipe = Recipe::create([
@@ -36,9 +38,16 @@ class Recipes extends Component
                 'consigne' => $this->consigne,
                 'created_by' => auth()->check() ? auth()->id() : null,
             ]);
+            
 
-            foreach ($this->ingredients as $ingredientId) {
-                $recipe->ingredients()->attach($ingredientId);
+            foreach ($this->ingredient as $key => $value) {
+                $e = RecipeContient::create([
+                    'recipe_id' => $recipe->id,
+                    'ingredient_id' => $key,
+                ]);
+                dd($e->recipe()->attach($recipe->id));
+            $e->recipe()->attach($recipe->id);
+            $e->ingredient()->attach($key);
             }
         });
         $this->reset();
@@ -53,6 +62,13 @@ class Recipes extends Component
             $this->allIngredients = Ingredient::all();
         }
 
+        // foreach ($this->allIngredients as $key => $ingredient) {
+            // foreach ($ingredient as $ingredientId => $value) {
+
+            //    dump($ingredient);
+            // }
+            
+        // }
         return view('livewire.recipes');
     }
 }

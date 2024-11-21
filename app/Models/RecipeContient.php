@@ -15,17 +15,17 @@ class RecipeContient extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'id_ingredient',
-        'id_recette',
+        'ingredient_id',
+        'recipe_id',
     ];
 
     public function recipe()
     {
-        return $this->belongsTo(Recipe::class, 'recipe_id');
+        return $this->belongsToMany(Recipe::class);
     }
 
     public function ingredient()
     {
-        return $this->belongsTo(Ingredient::class, 'ingredient_id');
+        return $this->belongsToMany(Ingredient::class);
     }
 }
