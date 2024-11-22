@@ -4,7 +4,6 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Recipe;
-use App\Models\RecipeContient;
 use App\Models\Ingredient;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -38,17 +37,16 @@ class Recipes extends Component
                 'consigne' => $this->consigne,
                 'created_by' => auth()->check() ? auth()->id() : null,
             ]);
+            foreach ($this->ingredient as $key => $value) {
+                $recipe->ingredients()->attach($key);
+            }
+            // $recipe->ingredients()->attach($this->ingredient);
             
 
-            foreach ($this->ingredient as $key => $value) {
-                $e = RecipeContient::create([
-                    'recipe_id' => $recipe->id,
-                    'ingredient_id' => $key,
-                ]);
-                dd($e->recipe()->attach($recipe->id));
-            $e->recipe()->attach($recipe->id);
-            $e->ingredient()->attach($key);
-            }
+            // foreach ($this->ingredient as $key => $value) {
+            // $recipe->recipe()->attach($recipe->id);
+            // $recipe->ingredient()->attach($key);
+            // }
         });
         $this->reset();
         session()->flash('message', 'Recette créée avec succès !');

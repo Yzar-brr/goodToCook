@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Ingredient;
 use App\Models\Recipe;
-use App\Models\RecipeContient;
 use Carbon\Factory;
 use Illuminate\Support\Facades\Hash;
 

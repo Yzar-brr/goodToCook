@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\RecipeContient;
+use App\Models\IngredientRecipe;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ingredient extends Model
 {
@@ -21,8 +22,8 @@ class Ingredient extends Model
     ];
 
     public $timestamps = true;
-
-    public function recipe(){
-        return $this->belongsToMany(Recipe::class, 'recipe_id');
+    public function recipes(): BelongsToMany
+    {
+        return $this->belongsToMany(Recipe::class);
     }
 }
