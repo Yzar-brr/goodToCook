@@ -40,13 +40,6 @@ class Recipes extends Component
             foreach ($this->ingredient as $key => $value) {
                 $recipe->ingredients()->attach($key);
             }
-            // $recipe->ingredients()->attach($this->ingredient);
-            
-
-            // foreach ($this->ingredient as $key => $value) {
-            // $recipe->recipe()->attach($recipe->id);
-            // $recipe->ingredient()->attach($key);
-            // }
         });
         $this->reset();
         session()->flash('message', 'Recette créée avec succès !');
@@ -55,18 +48,11 @@ class Recipes extends Component
     public function render()
     {
         if($this->ingredientResearch != ''){
-            $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->get();
+            $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->where('cofirmed', '=', '1')->get();
         }else{
-            $this->allIngredients = Ingredient::all();
+            $this->allIngredients = Ingredient::all()->whereIn('confirmed', 1);
         }
 
-        // foreach ($this->allIngredients as $key => $ingredient) {
-            // foreach ($ingredient as $ingredientId => $value) {
-
-            //    dump($ingredient);
-            // }
-            
-        // }
         return view('livewire.recipes');
     }
 }

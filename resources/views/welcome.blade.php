@@ -46,8 +46,6 @@
                         <div class="mx-auto sm:px-6 lg:px-8">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-6 text-gray-900">
-                                    <div class="text-xl font-bold text-center">Bienvenue sur notre site de recettes</div>
-                                    <div class="text-center my-4">Vous pouvez créer des recettes et des ingrédients</div>
                                     <livewire:home />
                                 </div>
                             </div>

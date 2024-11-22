@@ -1,8 +1,29 @@
 
 <div>
-    <div class="flex p-4">
-        <div class="flex justify-center w-full">
-                                
+    <div class="flex p-4 flex-col">
+        <div class="flex justify-center w-full p-4">
+            <div class=''>
+                <small for="small-input" class="block mb-2 text-sm font-medium text-gray-400 dark:text-gray-900 ">Rechercher une recette</small>
+                <input wire:model.live='researchRecipe' type="text" id="small-input" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Rechercher une recette'>
+            </div>
+            <div></div>          
+        </div>
+        <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($recipes as $recipe)
+                    <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white dark:bg-gray-800">
+                        <img class="w-full" src="{{ $recipe->image }}" alt="{{ $recipe->name }}"> 
+                        <div class="px-6 py-4">
+                            <div class="font-bold text-xl mb-2 text-gray-900 dark:text-white">{{ $recipe->name }}</div>
+                            <p class="text-gray-700 dark:text-gray-400 text-base">
+                                {{-- @dump($recipes) --}}
+
+                            </p>
+                        </div>
+
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
