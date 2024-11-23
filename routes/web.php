@@ -26,4 +26,20 @@ Route::view('profile', 'profile')
 Route::view('home', 'welcome')
     ->name('home');
 
+
+// Admin auth routes
+
+Route::view('admin_show_recipes', 'admin.recipes')
+    ->middleware(['auth', 'verified', 'admin'])
+    ->name('admin_show_recipes');
+
+Route::view('admin_show_users', 'admin.users')
+    ->middleware(['auth', 'verified', 'admin'])
+    ->name('admin_show_users');
+
+    Route::view('admin_show_ingredients', 'admin.ingredients')
+    ->middleware(['auth', 'verified', 'admin'])
+    ->name('admin_show_ingredients');
+
+
 require __DIR__.'/auth.php';

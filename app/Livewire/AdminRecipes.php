@@ -12,7 +12,13 @@ class AdminRecipes extends Component
 
     public function approved($idRecipe){
         $recipe = Recipe::find($idRecipe);
-        $recipe->confirmed = !$recipe->confirmed;
+        $ingredients = $recipe->ingredients->pluck('confirmed')->toArray();
+        $e = 'test';
+        if(in_array(0, $ingredients)){
+            return;
+        }else{
+            $recipe->confirmed = !$recipe->confirmed;
+        }
         $recipe->save();
     }
 
