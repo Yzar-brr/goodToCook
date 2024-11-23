@@ -15,7 +15,6 @@ class Recipe extends Model
     protected $table = 'recipe';
 
     protected $fillable = [
-        'id',
         'temps',
         'ingredient',
         'consigne',
@@ -25,7 +24,7 @@ class Recipe extends Model
         'confirmed',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function ingredients(): BelongsToMany
     {

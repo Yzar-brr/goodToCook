@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Ingredient;
 use App\Models\Recipe;
-use Carbon\Factory;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -25,11 +24,11 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('root'),
             ]);
         }
-        
-        
-        $user = User::first();
-
-        Ingredient::factory(30)->create();
-
+        if(Ingredient::where('name', 'factory_item')->count() == 0){
+            Ingredient::factory(1)->create();
+        }
+        if(Recipe::where('name', 'factory_item')->count() == 0){
+            Recipe::factory(1)->create();
+        }
     }
 }

@@ -13,6 +13,12 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<!-- Include KillerCarousel CSS -->
+<link href="killercarousel.css" type="text/css" rel="stylesheet" />
+
+<!-- Include KillerCarousel JavaScript -->
+<script type="text/javascript" src="killercarousel.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

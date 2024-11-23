@@ -10,7 +10,7 @@ class RecipeContient extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'recipe_contient';
+    protected $table = 'ingredient_recipe';
 
     public $timestamps = true;
 

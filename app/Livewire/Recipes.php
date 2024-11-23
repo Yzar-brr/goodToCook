@@ -48,7 +48,7 @@ class Recipes extends Component
     public function render()
     {
         if($this->ingredientResearch != ''){
-            $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->where('cofirmed', '=', '1')->get();
+            $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->where('confirmed', '=', '1')->get();
         }else{
             $this->allIngredients = Ingredient::all()->whereIn('confirmed', 1);
         }
