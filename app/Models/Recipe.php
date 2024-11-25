@@ -18,6 +18,7 @@ class Recipe extends Model
         'temps',
         'ingredient',
         'consigne',
+        'image',
         'name',
         'description',
         'created_by',

@@ -7,13 +7,16 @@ use App\Models\Recipe;
 use App\Models\Ingredient;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 
 class Recipes extends Component
 {
+    use WithFileUploads;
     public $name;
     public $description;
     public $temps;
     public $consigne;
+    public $image;
     public array $ingredients;
     public $ingredient = [];
     public $allIngredients;
@@ -27,14 +30,16 @@ class Recipes extends Component
                 'description' => 'nullable|string',
                 'temps' => 'required|integer',
                 'consigne' => 'nullable|string',
+                'image' => 'required|image|max:2048',
                 'ingredient' => 'required|array|min:1',
             ]);
-            
+            $imagePath = $this->image->store('images', 'public');
             $recipe = Recipe::create([
                 'name' => $this->name,
                 'description' => $this->description,
                 'temps' => $this->temps,
                 'consigne' => $this->consigne,
+                'image' => strval($imagePath),
                 'created_by' => auth()->check() ? auth()->id() : null,
             ]);
             foreach ($this->ingredient as $key => $value) {
@@ -43,6 +48,8 @@ class Recipes extends Component
         });
         $this->reset();
         session()->flash('message', 'Recette créée avec succès !');
+        $this->reset('image');
+        session()->flash('image_message', 'Image charger avec succès.');
     }
 
     public function render()

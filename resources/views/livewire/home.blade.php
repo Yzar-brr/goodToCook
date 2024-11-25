@@ -22,7 +22,9 @@
 
             <div class="flex flex-row w-full rounded  shadow-lg bg-white overflow-hidden dark:bg-gray-800 h-24 text-white mb-4 items-center">
                 <div class="flex w-1/3">
-                    <img class="w-full h-52 object-cover" src="{{ asset('images/' . $principalRecipe->image )}}" alt="{{ $principalRecipe->description }}">
+                    @isset($principalRecipe->image)
+                    <img class="w-full h-52 object-cover" src="{{ asset('storage/' . $principalRecipe->image )}}"  alt="{{ $principalRecipe->description }}">
+                    @endisset
                 </div>
                 <div class="flex w-1/3 items-center">
                     <span>{{$principalRecipe->name}}</span>
@@ -54,7 +56,7 @@
             @foreach($recipes as $recipe)
             <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white dark:bg-gray-800">
                 <div class="overflow-hidden	h-52 w-full">
-                    <img class="w-full h-52 object-cover" src="{{ asset('images/' . $recipe->image) }}" alt="{{ $recipe->description }}">
+                    <img class="w-full h-52 object-cover" src="{{ asset('storage/' . $recipe->image) }}" alt="{{ $recipe->description }}">
                 </div>
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2 text-gray-900 dark:text-white">{{ $recipe->name }}</div>

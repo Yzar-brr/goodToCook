@@ -61,6 +61,19 @@
                     @enderror
                 </div>
 
+                <div class="form-group flex flex-col">
+                    <label for="image">Sélectionnez une image</label>
+                    <input type="file" class="form-control" id="image" wire:model.live="image">
+                    @error('image')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    @if (session()->has('image_message'))
+                        <div class="alert alert-success text-green-600">
+                            {{ session('image_message') }}
+                        </div>
+                    @endif
+                </div>
+
                 <button type="submit" class="btn btn-primary">Soumettre la recette</button>
             </form>
         </div>
