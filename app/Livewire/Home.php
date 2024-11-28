@@ -14,7 +14,6 @@ class Home extends Component
     public $recipesIngredients = [];
     public $researchRecipe = '';
     public $principalRecipe;
-    
     public $search = '';
     
 

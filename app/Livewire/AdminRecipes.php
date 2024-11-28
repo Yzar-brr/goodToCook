@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Recipe;
 use Illuminate\Database\Eloquent\Collection;
+use App\Models\User;
 
 class AdminRecipes extends Component
 {
@@ -20,6 +21,14 @@ class AdminRecipes extends Component
             $recipe->confirmed = !$recipe->confirmed;
         }
         $recipe->save();
+    }
+
+    public function getUserName($id){
+        $user = User::find($id);
+        return $user->name;
+    }
+
+    public function modify($id){
     }
 
     public function render()
