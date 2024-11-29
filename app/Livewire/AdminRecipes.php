@@ -14,7 +14,6 @@ class AdminRecipes extends Component
     public function approved($idRecipe){
         $recipe = Recipe::find($idRecipe);
         $ingredients = $recipe->ingredients->pluck('confirmed')->toArray();
-        $e = 'test';
         if(in_array(0, $ingredients)){
             return;
         }else{
@@ -25,7 +24,7 @@ class AdminRecipes extends Component
 
     public function getUserName($id){
         $user = User::find($id);
-        return $user->name;
+        return $user->name ?? 'Utilisateur inconnu';
     }
 
     public function modify($id){

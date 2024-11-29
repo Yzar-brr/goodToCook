@@ -17,8 +17,9 @@
                         <div type="text" class="flex w-32 h-8  bg-white rounded-sm m-2 px-4 justify-center items-center @if($recipe->confirmed) bg-green-200 @else bg-red-200 @endif">@if($recipe->confirmed) Oui @else Non @endif</div>
                         <div wire:click='approved({{$recipe->id}})' class="flex w-32 h-8 bg-gray-200 rounded-sm m-2 px-4 justify-center items-center cursor-pointer">Approuver</div>
                         <div wire:click="modify({{$recipe->id}})" class="flex w-32 h-8 bg-gray-200 rounded-sm m-2 px-4 justify-center items-center cursor-pointer">Modifier</div>
+                        <div wire:click="$dispatch('openModal', { recipe: {{ json_encode($recipe) }} })" class="flex w-32 h-8 bg-gray-200 rounded-sm m-2 px-4 justify-center items-center cursor-pointer">Voir</div>
                     </div>
-                @endforeach
+                    @endforeach
             </div>
         </div>
     </div>

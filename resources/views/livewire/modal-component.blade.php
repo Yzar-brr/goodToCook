@@ -8,8 +8,7 @@
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
     class="fixed inset-0 z-50 overflow-y-auto"
-    aria-labelledby="modal-title" role="dialog" aria-modal="true"
->
+    aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-end justify-center min-h-screen p-4 text-center sm:block sm:p-0">
         <!-- Modal overlay -->
         <div class="fixed inset-0 transition-opacity
@@ -46,9 +45,7 @@
                         <div>
                             <p class="text-sm text-gray-500 w-full">
                                 <h3>Consgines :</h3>
-                                @foreach($this->recipe['consigne'] as $consigne)
-                                <li>{{$consigne}}</li>
-                                @endforeach
+                                <li>{{$this->recipe['consigne']}}</li>
                             </p>
                         </div>
                         <div class="mt-2">

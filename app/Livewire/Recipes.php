@@ -8,10 +8,12 @@ use App\Models\Ingredient;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Recipes extends Component
 {
     use WithFileUploads;
+    use WithPagination;
     public $name;
     public $description;
     public $temps;
@@ -56,8 +58,11 @@ class Recipes extends Component
     {
         if($this->ingredientResearch != ''){
             $this->allIngredients = Ingredient::where('name', 'like', '%'.$this->ingredientResearch.'%')->where('confirmed', '=', '1')->get();
+            $this->allIngredients = $this->allIngredients;
         }else{
-            $this->allIngredients = Ingredient::all()->whereIn('confirmed', 1);
+            $this->allIngredients = Ingredient::all()->where('confirmed', 1);
+            $this->allIngredients = $this->allIngredients;
+
         }
 
         return view('livewire.recipes');

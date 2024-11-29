@@ -22,7 +22,7 @@ class ModalComponent extends Component
     {
         $this->recipe = $recipe ?? null;
         $this->isOpen = true;
-        $this->recipe['consigne'] = explode(', ',$this->recipe['consigne']);
+        $this->recipe['consigne'] = $this->recipe['consigne'];
         $this->recipeContientIngredients = RecipeContient::where('recipe_id', $this->recipe['id'])->get()->pluck('ingredient_id')->toArray();
         $this->ingredients = Ingredient::whereIn('id', $this->recipeContientIngredients)->get();
     }

@@ -30,18 +30,16 @@
                     <span>{{$principalRecipe->name}}</span>
                 </div>
                 <div class="flex w-1/3  justify-between p-2 items-center">
-                    <div class="flex w-1/2">
+                    <div class="flex w-full">
                         <span>Temps de préparation : </span>
                         <span>{{$principalRecipe->temps}}</span>
                         <span> min</span>
                     </div>
                     
                 </div>
-                <div class="flex w-1/3 bg-blue-500 hover:bg-blue-700 h-full transition">
+                <div class="flex w-1/3 bg-blue-500 hover:bg-blue-700 h-full transition cursor-pointer" wire:click="$dispatch('openModal', { recipe: {{ json_encode($principalRecipe) }} })">
                     <div class="flex w-full justify-center items-center">
-                        <button 
-                            class="flex font-bold text-white rounded" 
-                            wire:click="$dispatch('openModal', { recipe: {{ json_encode($principalRecipe) }} })">
+                        <button class="flex font-bold text-white rounded">
                             Afficher les détails
                         </button>
                     </div>

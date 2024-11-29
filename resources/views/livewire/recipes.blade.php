@@ -54,7 +54,7 @@
                             <label class="flex justify-center items-center ml-2" for="ingredient-id-{{ $ingredient->id }}">{{ $ingredient->name }}</label>
                         </div>
                     @endforeach
-
+                        {{-- {{$allIngredients->paginate()}} --}}
                     <small class="text-gray-500">Ajoutez des ingrédients en cochant les cases.</small>
                     @error('ingredient')
                         <span class="text-danger">{{ $message }}</span>

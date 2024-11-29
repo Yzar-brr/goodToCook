@@ -22,7 +22,7 @@ class RecipeFactory extends Factory
 
     public function definition(): array
     {
-        $this->ingredients = Ingredient::all();
+        $this->ingredients = Ingredient::where('confirmed', 1)->get();
 
 
         $this->run();
