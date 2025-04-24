@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Ingredient;
 use App\Models\Recipe;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 
 class Home extends Component
@@ -13,8 +15,7 @@ class Home extends Component
     public $recipes;
     public $recipesIngredients = [];
     public $researchRecipe = '';
-    public $principalRecipe;
-    
+    public $principalRecipe;    
     public $search = '';
     
 
@@ -31,5 +32,29 @@ class Home extends Component
             return $recipe->ingredients->pluck('id')->toArray();
         });
         return view('livewire.home');
+    }
+    public function favorite(int $userId, int $recipeId)
+    {
+        // Vérifie si la ligne existe déjà dans la pivot
+        $exists = DB::table('recipes_favoris')
+                    ->where('user_id',   $userId)
+                    ->where('recipe_id', $recipeId)
+                    ->exists();
+
+        if ($exists) {
+            // Si déjà en favori → on supprime la ligne
+            DB::table('recipes_favoris')
+            ->where('user_id',   $userId)
+            ->where('recipe_id', $recipeId)
+            ->delete();
+        } else {
+            // Sinon → on insère la ligne
+            DB::table('recipes_favoris')->insert([
+                'user_id'    => $userId,
+                'recipe_id'  => $recipeId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

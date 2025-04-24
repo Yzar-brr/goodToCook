@@ -27,4 +27,14 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function favoriteRecipes()
+{
+    return $this->belongsToMany(
+        Recipe::class,
+        'recipes_favoris',   // nom de la table pivot
+        'user_id',           // clé étrangère vers users
+        'recipe_id'          // clé étrangère vers recipe
+    );
+}
 }
