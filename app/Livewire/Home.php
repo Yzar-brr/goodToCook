@@ -17,20 +17,36 @@ class Home extends Component
     public $researchRecipe = '';
     public $principalRecipe;    
     public $search = '';
+    public $favoritesOnly = false;
     
 
     public function render()
-    {
+    {   
+        $recettes_favorites = DB::table('recipes_favoris')
+        ->where('user_id', auth()->user()->id)
+        ->pluck('recipe_id')
+        ->toArray();
+        // dd($recettes_favorites);
         $this->principalRecipe = Recipe::where('confirmed', 1)->where('image', '!=', null)->orderBy('id', 'desc')->first() ?? null;
         if($this->researchRecipe != ''){
             $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->get()->whereIn('confirmed', 1);
+            if($this->favoritesOnly){
+                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $recettes_favorites)->get()->whereIn('confirmed', 1);
+            }
         }else{
             $this->recipes = Recipe::all()->whereIn('confirmed', 1)->sortByDesc('id');
+            if($this->favoritesOnly){
+                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $recettes_favorites)->get()->whereIn('confirmed', 1);
+            }
         }
         $this->ingredients = Ingredient::all()->pluck('name', 'id')->toArray();
         $this->recipesIngredients = Recipe::all()->map(function($recipe){
             return $recipe->ingredients->pluck('id')->toArray();
         });
+        if($this->favoritesOnly){
+            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $recettes_favorites)->get()->whereIn('confirmed', 1);
+        }
+        
         return view('livewire.home');
     }
     public function favorite(int $userId, int $recipeId)
@@ -57,4 +73,9 @@ class Home extends Component
             ]);
         }
     }
+    // public function favoriteToggle()
+    // {
+    //     $this->favoritesOnly = !$this->favoritesOnly;
+    //     $this->render();
+    // }
 }
