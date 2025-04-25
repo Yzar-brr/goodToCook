@@ -23,55 +23,53 @@ class Home extends Component
     
 
     public function render()
-    {
+{
+    // Récupération des recettes favorites de l'utilisateur
     $this->recettes_favorites = DB::table('recipes_favoris')
         ->where('user_id', auth()->user()->id)
         ->pluck('recipe_id')
         ->toArray();
-    // Fetch IDs of ingredients with 'vege_option' set to 1
-    $recette_vege = Ingredient::where('vege_option', 1)->get();
-    $recette_vege = $recette_vege->pluck('id')->toArray();
 
-    // Query recipes that have ingredients with the vege_option condition
-    $recette_vege = Recipe::whereHas('ingredients', function($query) use ($recette_vege) {
-        // Specify which 'id' column to refer to (ingredient's id)
-        $query->whereIn('ingredient.id', $recette_vege);
-    })->get();
+    // Recette principale (dernière confirmée avec image)
+    $this->principalRecipe = Recipe::where('confirmed', 1)
+        ->whereNotNull('image')
+        ->orderByDesc('id')
+        ->first();
 
-        $this->principalRecipe = Recipe::where('confirmed', 1)->where('image', '!=', null)->orderBy('id', 'desc')->first() ?? null;
-        if($this->researchRecipe != ''){
-            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->get()->whereIn('confirmed', 1);
-            if($this->favoritesOnly){
-                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
-            }
-            if($this->vegetarian){
-                $this->recipes = $this->recipes->filter(function($recipe) {
-                    $ingredientIds = $recipe->ingredients->pluck('vege_option')->toArray();
-                    return !in_array(0, $ingredientIds) && in_array(1, $ingredientIds);
-                });
-            }
-        }else{
-            $this->recipes = Recipe::all()->whereIn('confirmed', 1)->sortByDesc('id');
-            if($this->favoritesOnly){
-                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
-            }
-            if($this->vegetarian){
-                $this->recipes = $this->recipes->filter(function($recipe) {
-                    $ingredientIds = $recipe->ingredients->pluck('vege_option')->toArray();
-                    return !in_array(0, $ingredientIds) && in_array(1, $ingredientIds);
-                });
-            }
-        }
-        $this->ingredients = Ingredient::all()->pluck('name', 'id')->toArray();
-        $this->recipesIngredients = Recipe::all()->map(function($recipe){
-            return $recipe->ingredients->pluck('id')->toArray();
-        });
-        if($this->favoritesOnly){
-            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
-        }
-        
-        return view('livewire.home');
+    // Construction de la requête de base
+    $query = Recipe::query()->where('confirmed', 1);
+
+    // Si recherche par nom
+    if (!empty($this->researchRecipe)) {
+        $query->where('name', 'like', '%' . $this->researchRecipe . '%');
     }
+
+    // Si filtre favoris activé
+    if ($this->favoritesOnly) {
+        $query->whereIn('id', $this->recettes_favorites);
+    }
+
+    // Si filtre végétarien activé
+    if ($this->vegetarian) {
+        $query->whereDoesntHave('ingredients', function ($q) {
+            $q->where('vege_option', 0); // contient un ingrédient non végé = rejeté
+        })->whereHas('ingredients', function ($q) {
+            $q->where('vege_option', 1); // contient au moins un ingrédient végé
+        });
+    }
+
+    // Exécution finale de la requête
+    $this->recipes = $query->orderByDesc('id')->get();
+
+    // Autres données utiles pour la vue
+    $this->ingredients = Ingredient::pluck('name', 'id')->toArray();
+
+    $this->recipesIngredients = Recipe::with('ingredients')->get()->map(function ($recipe) {
+        return $recipe->ingredients->pluck('id')->toArray();
+    });
+
+    return view('livewire.home');
+}
     public function favorite(int $userId, int $recipeId)
     {
         // Vérifie si la ligne existe déjà dans la pivot

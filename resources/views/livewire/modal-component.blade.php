@@ -55,7 +55,7 @@
                             <p class="text-sm text-gray-500 w-full">
                                 <h3>Ingredients :</h3>
                                 @foreach($this->ingredients as $ingredient)
-                                <li>{{$ingredient['name']}}</li>
+                                <li>{{$ingredient['name']}} - {{$ingredient['quantite']}} {{$ingredient['unite']}}</li>
                                 @endforeach
                             </p>
                         </div>

@@ -72,21 +72,50 @@
                     </div>
 
                     <!-- Tags sélectionnés -->
-                    <div class="flex flex-wrap gap-2 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                         @foreach($ingredient as $id => $selected)
                             @if($selected)
                                 @php $ing = $allIngredients->firstWhere('id', $id); @endphp
                                 @if($ing)
-                                    <span class="flex items-center bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-sm">
-                                        {{ $ing->name }}
-                                        <button
-                                            type="button"
-                                            wire:click="ingredient.{{ $id }} = false"
-                                            class="ml-1 focus:outline-none"
-                                        >
-                                            ✕
-                                        </button>
-                                    </span>
+                                    <div class="flex justify-between items-center bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-sm gap-2">
+                                        {{-- Nom de l'ingrédient --}}
+                                        <span class="font-medium">{{ $ing->name }}</span>
+                    
+                                        {{-- Quantité, Unité et bouton "✕" groupés à droite --}}
+                                        <div class="flex items-center gap-2">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                step="any"
+                                                wire:model.lazy="ingredientQuantities.{{ $id }}.quantity"
+                                                class="w-16 text-blue-800 bg-white border border-blue-300 rounded px-2 py-1 text-sm"
+                                                placeholder="Qté"
+                                            />
+                    
+                                            <select
+                                                wire:model.lazy="ingredientQuantities.{{ $id }}.unit"
+                                                class="text-blue-800 bg-white border border-blue-300 rounded px-2 py-1 text-sm"
+                                            >
+                                                <option value="">Unité</option>
+                                                <option value="g">g</option>
+                                                <option value="kg">kg</option>
+                                                <option value="ml">ml</option>
+                                                <option value="l">l</option>
+                                                <option value="pcs">pcs</option>
+                                                <option value="c.à.c">c.à.c</option>
+                                                <option value="c.à.s">c.à.s</option>
+                                            </select>
+                    
+                                            <button
+                                                type="button"
+                                                wire:click="$set('ingredient.{{ $id }}', false)"
+                                                class="text-red-600 hover:text-red-800"
+                                                title="Supprimer"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    </div>
                                 @endif
                             @endif
                         @endforeach

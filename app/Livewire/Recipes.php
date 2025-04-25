@@ -12,70 +12,88 @@ use Livewire\WithFileUploads;
 class Recipes extends Component
 {
     use WithFileUploads;
+
     public $name;
     public $description;
     public $temps;
     public $consigne;
     public $image;
-    public array $ingredients;
-    public $ingredient = [];
+
+    public $ingredient = []; // [id => true/false]
+    public $ingredientQuantities = []; // [id => ['quantity' => ..., 'unit' => ...]]
     public $allIngredients;
     public string $ingredientResearch = '';
 
-// Soumission du formulaire
-public function submit()
-{
-    DB::transaction(function () {
-        // Validation des champs
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'temps' => 'required|integer',
-            'consigne' => 'nullable|string',
-            'image' => 'required|image|max:2048',
-            'ingredient' => 'required|array|min:1', // On exige qu'au moins un ingrédient soit sélectionné
-        ]);
+    // Soumission du formulaire
+    public function submit()
+    {
+        DB::transaction(function () {
+            // Validation des champs
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'temps' => 'required|integer',
+                'consigne' => 'nullable|string',
+                'image' => 'required|image|max:2048',
+                'ingredient' => 'required|array|min:1',
+            ]);
 
-        // Sauvegarde de l'image
-        $imagePath = $this->image->store('images', 'public');
+            // Sauvegarde de l'image
+            $imagePath = $this->image->store('images', 'public');
 
-        // Création de la recette
-        $recipe = Recipe::create([
-            'name' => $this->name,
-            'description' => $this->description,
-            'temps' => $this->temps,
-            'consigne' => $this->consigne,
-            'image' => $imagePath,
-            'created_by' => auth()->check() ? auth()->id() : null,
-        ]);
+            // Création de la recette
+            $recipe = Recipe::create([
+                'name' => $this->name,
+                'description' => $this->description,
+                'temps' => $this->temps,
+                'consigne' => $this->consigne,
+                'image' => $imagePath,
+                'created_by' => auth()->check() ? auth()->id() : null,
+            ]);
 
-        // Association des ingrédients sélectionnés à la recette
-        foreach ($this->ingredient as $ingredientId) {
-            $recipe->ingredients()->attach($ingredientId);
-        }
-    });
+            // Association des ingrédients avec quantité et unité
+            foreach ($this->ingredient as $ingredientId => $selected) {
+                if ($selected && isset($this->ingredientQuantities[$ingredientId])) {
+                    $data = $this->ingredientQuantities[$ingredientId];
 
-    // Réinitialisation des données
-    $this->reset();
-    session()->flash('message', 'Recette créée avec succès !');
-    $this->reset('image');
-    session()->flash('image_message', 'Image chargée avec succès.');
-}
+                    $recipe->ingredients()->attach($ingredientId, [
+                        'quantity' => $data['quantity'] ?? null,
+                        'unite' => $data['unit'] ?? null,
+                        'created_at' => now(),
+                    ]);
+                }
+            }
+        });
 
-// Méthode pour afficher les ingrédients dans la vue
-public function render()
-{
-    // Recherche des ingrédients en fonction de l'entrée
-    if($this->ingredientResearch != '') {
-        $this->allIngredients = Ingredient::where('name', 'like', '%' . $this->ingredientResearch . '%')
-            ->where('confirmed', '=', 1) // Assurez-vous que l'ingrédient est confirmé
-            ->get();
-    } else {
-        // Si aucun mot-clé n'est saisi, afficher tous les ingrédients confirmés
-        $this->allIngredients = Ingredient::where('confirmed', '=', 1)->get();
+        // Réinitialisation des données
+        $this->reset();
+        session()->flash('message', 'Recette créée avec succès !');
+        $this->reset('image');
+        session()->flash('image_message', 'Image chargée avec succès.');
     }
 
-    // Retourner la vue de la recette
-    return view('livewire.recipes');
-}
+    // Mise à jour d'un ingrédient : on peut nettoyer les quantités
+    public function updatedIngredient($value, $key)
+    {
+        if (!$value) {
+            unset($this->ingredientQuantities[$key]);
+        }
+    }
+
+    // Chargement des ingrédients avec recherche
+    public function render()
+    {
+        $query = Ingredient::query()
+            ->where('confirmed', 1);
+
+        if (!empty($this->ingredientResearch)) {
+            $query->where('name', 'like', '%' . $this->ingredientResearch . '%');
+        }
+
+        $this->allIngredients = $query->get();
+
+        return view('livewire.recipes');
+    }
+
+
 }

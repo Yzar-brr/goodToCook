@@ -12,7 +12,7 @@
             <label for="vegetarian" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                 Végétarien seulement
             </label>
-            @dump($this->recettes_favorites)
+            {{-- @dump($this->recettes_favorites) --}}
           </div>
 
 
