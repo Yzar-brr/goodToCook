@@ -19,11 +19,16 @@ class Home extends Component
     public $search = '';
     public $vegetarian = false;
     public $favoritesOnly = false;
+    public $recettes_favorites = [];
     
 
     public function render()
     {
-        // Fetch IDs of ingredients with 'vege_option' set to 1
+    $this->recettes_favorites = DB::table('recipes_favoris')
+        ->where('user_id', auth()->user()->id)
+        ->pluck('recipe_id')
+        ->toArray();
+    // Fetch IDs of ingredients with 'vege_option' set to 1
     $recette_vege = Ingredient::where('vege_option', 1)->get();
     $recette_vege = $recette_vege->pluck('id')->toArray();
 
@@ -36,6 +41,9 @@ class Home extends Component
         $this->principalRecipe = Recipe::where('confirmed', 1)->where('image', '!=', null)->orderBy('id', 'desc')->first() ?? null;
         if($this->researchRecipe != ''){
             $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->get()->whereIn('confirmed', 1);
+            if($this->favoritesOnly){
+                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
+            }
             if($this->vegetarian){
                 $this->recipes = $this->recipes->filter(function($recipe) {
                     $ingredientIds = $recipe->ingredients->pluck('vege_option')->toArray();
@@ -44,6 +52,9 @@ class Home extends Component
             }
         }else{
             $this->recipes = Recipe::all()->whereIn('confirmed', 1)->sortByDesc('id');
+            if($this->favoritesOnly){
+                $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
+            }
             if($this->vegetarian){
                 $this->recipes = $this->recipes->filter(function($recipe) {
                     $ingredientIds = $recipe->ingredients->pluck('vege_option')->toArray();
@@ -56,7 +67,7 @@ class Home extends Component
             return $recipe->ingredients->pluck('id')->toArray();
         });
         if($this->favoritesOnly){
-            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $recettes_favorites)->get()->whereIn('confirmed', 1);
+            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $this->recettes_favorites)->get()->whereIn('confirmed', 1);
         }
         
         return view('livewire.home');

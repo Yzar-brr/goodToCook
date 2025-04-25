@@ -1,6 +1,20 @@
 <div>
     <div class="flex flex-col p-4">
 
+        <div>
+            <input type="checkbox" value="false" wire:model.live='favoritesOnly' class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:ring-2" id="favoritesOnly">
+            <label for="favoritesOnly" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Favories seulement
+            </label>
+        </div>
+        <div>
+            <input type="checkbox" value="false" wire:model.live='vegetarian' class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:ring-2" id="vegetarian">
+            <label for="vegetarian" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Végétarien seulement
+            </label>
+            @dump($this->recettes_favorites)
+          </div>
+
 
         <div class="flex flex-col w-full items-end">
 
