@@ -18,6 +18,7 @@ class Home extends Component
     public $principalRecipe;    
     public $search = '';
     public $vegetarian = false;
+    public $favoritesOnly = false;
     
 
     public function render()
@@ -54,6 +55,10 @@ class Home extends Component
         $this->recipesIngredients = Recipe::all()->map(function($recipe){
             return $recipe->ingredients->pluck('id')->toArray();
         });
+        if($this->favoritesOnly){
+            $this->recipes = Recipe::where('name', 'like', '%'.$this->researchRecipe.'%')->whereIn('id', $recettes_favorites)->get()->whereIn('confirmed', 1);
+        }
+        
         return view('livewire.home');
     }
     public function favorite(int $userId, int $recipeId)
@@ -80,4 +85,9 @@ class Home extends Component
             ]);
         }
     }
+    // public function favoriteToggle()
+    // {
+    //     $this->favoritesOnly = !$this->favoritesOnly;
+    //     $this->render();
+    // }
 }
